@@ -1,20 +1,20 @@
+import { useEffect } from "react";
 import styled from "styled-components";
 
-function EditableText({ breakRow, onInput, children }) {
-  const handleKeyCode = (event) => {
-    if (event.key === "Enter") if (breakRow) event.target.blur();
-  };
+function EditableText({ value }) {
+  useEffect(() => {
+    //Dar um jeito de tirar o textContent da porra da div caralho que raiva
+  }, [value]);
 
   return (
-    <EditableTextWrapper
-      onKeyDown={handleKeyCode}
-      onChange={onInput}
-    ></EditableTextWrapper>
+    <EditableTextWrapper contentEditable suppressContentEditableWarning>
+      {value}
+    </EditableTextWrapper>
   );
 }
 
-const EditableTextWrapper = styled.input`
-  padding: 0.1rem 0.2rem;
+const EditableTextWrapper = styled.div`
+  padding: 0;
   border: none;
   outline: none;
 `;

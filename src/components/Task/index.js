@@ -13,46 +13,53 @@ const TaskWrapper = styled(Card)`
 
 function Task({ id }) {
   const { removeTask } = useContext(TaskContext);
-  const [title, setTitle] = useState("");
-
-  const handleRemoveTask = () => removeTask(id);
-
-  const emboldText = () => {
-    var parentEl;
-    if (window.getSelection) {
-      let sel = window.getSelection();
-      if (sel.rangeCount) {
-        parentEl = sel.getRangeAt(0).commonAncestorContainer;
-        if (parentEl.nodeType !== 1) {
-          parentEl = parentEl.parentNode;
-          console.log(parentEl);
-        }
-      }
-    }
-  };
+  const [titleTemplate, setTitleTemplate] = useState(<></>);
 
   return (
     <>
-      <h1>{title}</h1>
       <TaskWrapper>
         <Card.Header>
           <div className="d-flex justify-content-between align-items-center">
             <div>
-              <GrBold onMouseDown={emboldText} size={20} />
+              <GrBold
+                onMouseDown={() => {
+                  let initialPos = window.getSelection().anchorOffset;
+                  let finalPos = window.getSelection().focusOffset;
+
+                  if (finalPos < initialPos) {
+                    initialPos = window.getSelection().focusOffset;
+                    finalPos = window.getSelection().anchorOffset;
+                  }
+
+                  const initialText = window
+                    .getSelection()
+                    .focusNode.textContent.substring(0, initialPos);
+                  const finalText = window
+                    .getSelection()
+                    .focusNode.textContent.substring(
+                      finalPos,
+                      window.getSelection().focusNode.textContent.length
+                    );
+
+                  setTitleTemplate(
+                    <p>
+                      {initialText}
+                      <b>{window.getSelection().toString()}</b>
+                      {finalText}
+                    </p>
+                  );
+                }}
+                size={20}
+              />
               <GrItalic size={20} />
               <GrUnderline size={20} />
             </div>
-            <MdDeleteForever onClick={handleRemoveTask} size={20} />
+            <MdDeleteForever onClick={() => removeTask(id)} size={20} />
           </div>
         </Card.Header>
         <Card.Body>
           <Card.Title>
-            <EditableText
-              breakRow
-              onInput={async (event) => {
-                setTitle(event.target.value);
-              }}
-            ></EditableText>
+            <EditableText value={titleTemplate}></EditableText>
           </Card.Title>
           <EditableText />
         </Card.Body>
