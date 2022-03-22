@@ -42,11 +42,11 @@ function Task({ id }) {
                     );
 
                   setTitleTemplate(
-                    <p>
+                    <>
                       {initialText}
                       <b>{window.getSelection().toString()}</b>
                       {finalText}
-                    </p>
+                    </>
                   );
                 }}
                 size={20}
