@@ -19,47 +19,11 @@ function Task({ id }) {
     <>
       <TaskWrapper>
         <Card.Header>
-          <div className="d-flex justify-content-between align-items-center">
-            <div>
-              <GrBold
-                onMouseDown={() => {
-                  let initialPos = window.getSelection().anchorOffset;
-                  let finalPos = window.getSelection().focusOffset;
-
-                  if (finalPos < initialPos) {
-                    initialPos = window.getSelection().focusOffset;
-                    finalPos = window.getSelection().anchorOffset;
-                  }
-
-                  const initialText = window
-                    .getSelection()
-                    .focusNode.textContent.substring(0, initialPos);
-                  const finalText = window
-                    .getSelection()
-                    .focusNode.textContent.substring(
-                      finalPos,
-                      window.getSelection().focusNode.textContent.length
-                    );
-
-                  setTitleTemplate(
-                    <p>
-                      {initialText}
-                      <b>{window.getSelection().toString()}</b>
-                      {finalText}
-                    </p>
-                  );
-                }}
-                size={20}
-              />
-              <GrItalic size={20} />
-              <GrUnderline size={20} />
-            </div>
-            <MdDeleteForever onClick={() => removeTask(id)} size={20} />
-          </div>
+          <MdDeleteForever onClick={() => removeTask(id)} size={20} />
         </Card.Header>
         <Card.Body>
           <Card.Title>
-            <EditableText value={titleTemplate}></EditableText>
+            <EditableText />
           </Card.Title>
           <EditableText />
         </Card.Body>

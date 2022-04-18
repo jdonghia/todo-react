@@ -1,22 +1,33 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import "medium-editor/dist/css/medium-editor.css";
+import "medium-editor/dist/css/themes/default.css";
+import MediumEditor from "medium-editor";
 import styled from "styled-components";
 
-function EditableText({ value }) {
+const EditableText = () => {
+  const ref = useRef();
+
   useEffect(() => {
-    //Dar um jeito de tirar o textContent da porra da div caralho que raiva
-  }, [value]);
+    if (ref.current !== undefined) {
+      // eslint-disable-next-line no-unused-vars
+      const et = new MediumEditor(ref.current, {
+        toolbar: {
+          buttons: ["bold", "italic", "underline"],
+        },
+        placeholder: {
+          text: "",
+        },
+      });
+    }
+  }, [ref]);
 
   return (
-    <EditableTextWrapper contentEditable suppressContentEditableWarning>
-      {value}
-    </EditableTextWrapper>
+    <EditableTextWrapper spellCheck={false} ref={ref}></EditableTextWrapper>
   );
-}
+};
 
 const EditableTextWrapper = styled.div`
-  padding: 0;
-  border: none;
   outline: none;
+  font-weight: normal;
 `;
-
 export default EditableText;
